@@ -1,0 +1,8 @@
+.venv/
+.env
+__pycache__/
+state.json
+state.json.tmp
+*.log
+message_index.json
+message_index.json.tmp
