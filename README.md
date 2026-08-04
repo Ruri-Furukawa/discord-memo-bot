@@ -6,16 +6,16 @@ Discord の特定チャンネルに投稿したメッセージを、[Obsidian](h
 
 ## 主な機能
 
-- **`#memo` チャンネルへの投稿をリアルタイムで Daily Note に追記**（`bot.py`）
-- **PC がオフラインだった間に投稿されたメッセージの取りこぼしを、オンライン復帰時にまとめて同期**（`sync.py`）
-- **`#task` ハッシュタグを付けたメッセージを Markdown のチェックボックス（`- [ ] `）として記録**
-- **Discord の「返信（Reply）」機能を使ったメッセージを、返信元の直下にインデント付き箇条書きとして挿入**
-- **本文中の URL を、そのページの `<title>` を取得して `[ページタイトル](URL)` という Markdown リンクに自動変換**（取得できない場合は元の URL のまま）
+- **`#memo` チャンネルへの投稿をデイリーノートに追記**（`bot.py`）：公式sync機能やicloudなどを使わずに、スマートフォンからObsidianへ投稿を反映できます。
+- **PC がオフラインだった間に投稿されたメッセージの取りこぼしを、オンライン復帰時にまとめて同期**（`sync.py`）：外出時など、PCを起動していないときの思考も逃さず記録できます。
+- **`#task` ハッシュタグを付けたメッセージを Markdown のチェックボックス（`- [ ] `）として記録**：日常的なメモとタスク記録のチャネルを統一できます。
+- **Discord の「返信（Reply）」機能を使ったメッセージを、返信元の直下にインデント付き箇条書きとして挿入**：関連する投稿をスレッド形式でまとめることができます。
+- **本文中の URL を、そのページの `<title>` を取得して `[ページタイトル](URL)` という Markdown リンクに自動変換**（取得できない場合は元の URL のまま）：スマートフォンで閲覧したWebサイトも、後から容易に確認できます。
 - **同一メッセージの重複追記を防止**（`state.json` / `message_index.json`）
 
 ## システム構成・処理の流れ
 
-このリポジトリには役割の異なる 3 つの Python ファイルがあります。
+このリポジトリには 3 つの Python ファイルがあります。
 
 | ファイル | 役割 |
 |---|---|
@@ -23,7 +23,7 @@ Discord の特定チャンネルに投稿したメッセージを、[Obsidian](h
 | `sync.py` | 一度だけ実行して終了するワンショットスクリプト。PC 起動・ログイン時や定期実行（`launchd`）によって、オフライン中に届いていた未取得メッセージをまとめて取り込む |
 | `memo_note.py` | `bot.py` と `sync.py` の両方から呼ばれる共通ロジック。`#task` タグの解釈、URL のリンク化、Daily Note への書き込み、返信の挿入位置の管理を担う |
 
-処理の流れ（共通）:
+処理の流れは以下の通りです。
 
 1. Discord の `#memo` チャンネルにメッセージが投稿される
 2. `bot.py`（常駐時）または `sync.py`（同期時）がメッセージを受信する
@@ -40,8 +40,8 @@ Discord の特定チャンネルに投稿したメッセージを、[Obsidian](h
 
 - macOS（`launchd` を利用した自動同期を使う場合。`bot.py` 単体は他 OS でも動作します）
 - Python 3.x（開発時は Python 3.14 系で動作確認）
-- Obsidian などで管理している Markdown ベースのノート Vault
-- Discord Bot アカウント（Discord Developer Portal で作成したアプリケーション）
+- Obsidian などで管理している Markdown ベースのノートを格納したVault
+- Discord Bot アカウント（Discord Developer Portal で作成したアプリケーションを使用するため）
 
 ## セットアップ方法
 
@@ -60,7 +60,7 @@ Discord の特定チャンネルに投稿したメッセージを、[Obsidian](h
    pip install -r requirements.txt
    ```
 
-3. `memo_note.py` 内の `VAULT_PATH` を、自分の Obsidian Vault のパスに書き換える（デフォルトは `~/Documents/Obsidian Vault`）
+3. `memo_note.py` 内の `VAULT_PATH` を、自分の Obsidian Vault のパスに書き換える。デフォルトは `~/Documents/Obsidian Vault`となっていますが、お使いのVaultへのパスに書き換えてください。
 
    ```python
    VAULT_PATH = Path.home() / "Documents" / "Obsidian Vault"
