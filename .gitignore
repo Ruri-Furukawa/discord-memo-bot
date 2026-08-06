@@ -6,3 +6,4 @@ state.json.tmp
 *.log
 message_index.json
 message_index.json.tmp
+com.furukawaruri.discord-memo-sync.plist

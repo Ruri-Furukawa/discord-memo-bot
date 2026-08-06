@@ -34,7 +34,7 @@ Discord の特定チャンネルに投稿したメッセージを、[Obsidian](h
    - 書き込んだ位置を `message_id` と紐づけて `message_index.json` に記録
 4. `sync.py` の場合はさらに、処理したメッセージの ID を `state.json` に保存し、次回起動時の重複防止・差分取得に使う
 
-`sync.py` は `com.furukawaruri.discord-memo-sync.plist` を使って macOS の `launchd` に登録することを想定しています（ログイン時に 1 回実行、以後 120 秒ごとにオンラインかどうかを確認して再試行）。
+`sync.py` は `com.example.discord-memo-sync.plist` を使って macOS の `launchd` に登録することを想定しています（ログイン時に 1 回実行、以後 120 秒ごとにオンラインかどうかを確認して再試行）。
 
 ## 必要な環境
 
@@ -60,7 +60,7 @@ Discord の特定チャンネルに投稿したメッセージを、[Obsidian](h
    pip install -r requirements.txt
    ```
 
-3. `memo_note.py` 内の `VAULT_PATH` を、自分の Obsidian Vault のパスに書き換える。デフォルトは `~/Documents/Obsidian Vault`となっていますが、お使いのVaultへのパスに書き換えてください。
+3. `memo_note.py` 内の `VAULT_PATH` を、自分の Obsidian Vault のパスに書き換える。デフォルトは `~/Documents/Obsidian Vault`となっていますが、お使いのVaultへのパスになるよう書き換えてください。
 
    ```python
    VAULT_PATH = Path.home() / "Documents" / "Obsidian Vault"
@@ -110,11 +110,11 @@ python3 sync.py
 
 一度だけ Discord に接続し、`#memo` チャンネルの未取得メッセージを取り込んだ後、自動的に終了します。オフラインの場合は数秒の疎通確認のみで即座に終了します（`sys.exit(0)`）。
 
-macOS では `com.furukawaruri.discord-memo-sync.plist` を `~/Library/LaunchAgents/` に配置し、`launchctl load` することで、ログイン時および 120 秒間隔での自動実行を設定できます（`plist` 内のパスは環境に合わせて書き換えてください）。
+macOS では `com.example.discord-memo-sync.plist` を `~/Library/LaunchAgents/` に配置し、`launchctl load` することで、ログイン時および 120 秒間隔での自動実行を設定できます（`plist` 内のパスは環境に合わせて書き換えてください）。
 
 ```bash
-cp com.furukawaruri.discord-memo-sync.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/com.furukawaruri.discord-memo-sync.plist
+cp com.example.discord-memo-sync.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.example.discord-memo-sync.plist
 ```
 
 ## Discord の `#memo` への投稿方法
@@ -222,7 +222,7 @@ discord-memo-bot/
 ├── sync.py                                   # ワンショット同期スクリプト（launchd想定）
 ├── memo_note.py                              # #memo→Daily Note変換の共通ロジック
 ├── requirements.txt                          # 依存パッケージ
-├── com.furukawaruri.discord-memo-sync.plist  # launchd用の設定ファイル（sync.pyの定期実行）
+├── com.example.discord-memo-sync.plist       # launchd用の設定ファイル（sync.pyの定期実行）
 ├── .env                                      # Discord Bot Token（Git管理外）
 ├── .gitignore
 ├── state.json                                # sync.py用の同期状態（Git管理外）
@@ -252,7 +252,7 @@ discord-memo-bot/
   返信元メッセージが `message_index.json` に記録されていない場合（`message_index.json` を削除した、返信元がこの Bot 導入前のメッセージである、など）に発生します。この場合は通常の新規メッセージとして扱われます。
 
 - **`launchd` 経由で `sync.py` が動かない**
-  `com.furukawaruri.discord-memo-sync.plist` 内のパス（Python の場所、`sync.py` の場所）が実際の環境と一致しているか確認してください。`launchctl load` 後に `sync.log` / `sync.error.log` を確認すると原因を特定しやすいです。
+  `com.example.discord-memo-sync.plist` 内のパス（Python の場所、`sync.py` の場所）が実際の環境と一致しているか確認してください。`launchctl load` 後に `sync.log` / `sync.error.log` を確認すると原因を特定しやすいです。
 
 ## セキュリティ上の注意
 

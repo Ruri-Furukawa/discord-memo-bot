@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.example.discord-memo-sync</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/path/to/discord-memo-bot/.venv/bin/python3</string>
+        <string>/path/to/discord-memo-bot/sync.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/path/to/discord-memo-bot</string>
+
+    <!-- ログイン時（Mac起動・ユーザーログイン）に1回実行する -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- オフライン時はsync.py側の疎通確認で数秒に終わるため、
+         2分おきに再試行して「オンラインになったタイミング」を素早く拾う -->
+    <key>StartInterval</key>
+    <integer>120</integer>
+
+    <key>StandardOutPath</key>
+    <string>/path/to/discord-memo-bot/sync.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/path/to/discord-memo-bot/sync.error.log</string>
+</dict>
+</plist>
